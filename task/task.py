@@ -5,6 +5,7 @@ from datetime import timedelta
 
 @dataclass
 class Task:
+    user_id: int
     name: Optional[str] = None
     start_time_timestamp_seconds: Optional[int] = None
     end_time_timestamp_seconds: Optional[int] = None

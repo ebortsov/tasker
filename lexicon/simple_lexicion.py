@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from aiogram import html
+from task.task import Task
+from aiogram import html
 
 
 @dataclass
@@ -22,6 +24,7 @@ class DefaultLexicon:
         f'{html.bold("completed")}!\n'
         'You have been working on it for {hours} hours {minutes} minutes'
     )
+    msg_no_completed_tasks: str = 'You haven\'t completed any tasks yet!'
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
@@ -31,3 +34,12 @@ class DefaultLexicon:
     kb_cancel_ongoing_task_confirm: str = 'Confirm cancellation'
     kb_continue_ongoing_task: str = 'Continue task'
     kb_finish_ongoing_task_confirm: str = 'Finish task!'
+
+    @staticmethod
+    def form_completed_tasks(completed_tasks: list[Task]) -> str:
+        result = '\n\n'.join(
+            html.bold('Title: ') + html.quote(task.name) + '\n' +
+            html.bold('Description: ') + html.quote(task.desc)
+            for task in completed_tasks
+        )
+        return result

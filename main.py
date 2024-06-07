@@ -12,7 +12,9 @@ from config.config import Config
 from middlewares.check_active_middleware import CheckActiveMiddleware
 from handlers import common_handlers
 from handlers import tasks_handlers
+from handlers import preview_tasks
 from lexicon.simple_lexicion import DefaultLexicon
+from db import db
 
 
 async def main():
@@ -23,8 +25,14 @@ async def main():
     dp.update.middleware(CheckActiveMiddleware())
     dp.include_router(common_handlers.router)
     dp.include_router(tasks_handlers.router)
+    dp.include_router(preview_tasks.router)
 
     dp.workflow_data.update(lexicon=DefaultLexicon)
+
+    # Setting up database
+    db_conn = db.get_connection()
+    db.create_table(db_conn)
+    dp.workflow_data.update(db_conn=db_conn)
 
     bot = Bot(
         token=config.telegram_bot.token,
