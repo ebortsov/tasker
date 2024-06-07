@@ -9,3 +9,4 @@ class TaskStates(StatesGroup):
     ongoing_task_cancel_confirm = State()
     finish_ongoing_task_confirm = State()
     completed_task_desc_enter = State()
+

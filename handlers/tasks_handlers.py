@@ -1,14 +1,21 @@
 from aiogram import Router
 from aiogram.types import Message
+from aiogram.types import ReplyKeyboardRemove
 from aiogram.filters import Command
 from aiogram import html
 from aiogram import F
 from aiogram.fsm.context import FSMContext
 from states.states import TaskStates
 from aiogram.filters import and_f, or_f
+import logging
+
+import time
+from math import floor
 
 from lexicon.simple_lexicion import DefaultLexicon
 from keyboards import keyboards
+from task.task import Task
+from utils.utils import hours_minutes_from_timedelta
 
 router = Router()
 
@@ -47,10 +54,15 @@ async def new_task_name_enter(message: Message, state: FSMContext, lexicon: Defa
     # User entered the name of the task. Now we need to start the new task
 
     # Remember the name and the start time of the task
-    await state.update_data(taskname=message.text)
+    await state.update_data(
+        task=Task(
+            name=message.text,
+            start_time_timestamp_seconds=floor(time.time())
+        )
+    )
 
     await message.answer(
-        text=lexicon.msg_ongoing_task_start.format(taskname=html.quote(message.text)),
+        text=lexicon.msg_ongoing_task_start.format(task_name=html.quote(message.text)),
         reply_markup=keyboards.get_ongoing_task_kb(lexicon)
     )
 
@@ -78,9 +90,9 @@ async def cancel_ongoing_task_confirm(message: Message, state: FSMContext, lexic
 )
 async def kill_task(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User confirms that they want to cancel the task
-    taskname = (await state.get_data())['taskname']
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
-        text=lexicon.msg_task_killed.format(taskname=taskname),
+        text=lexicon.msg_task_killed.format(task_name=current_task.name),
         reply_markup=keyboards.get_start_kb(lexicon)
     )
 
@@ -97,9 +109,9 @@ async def kill_task(message: Message, state: FSMContext, lexicon: DefaultLexicon
 )
 async def continue_task(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to continue the task (applies to both cancellation and finalization of the task)
-    taskname = (await state.get_data())['taskname']
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
-        text=lexicon.msg_continue_task.format(taskname=taskname),
+        text=lexicon.msg_continue_task.format(task_name=current_task.name),
         reply_markup=keyboards.get_ongoing_task_kb(lexicon)
     )
     await state.set_state(TaskStates.ongoing_task)
@@ -111,9 +123,36 @@ async def continue_task(message: Message, state: FSMContext, lexicon: DefaultLex
 )
 async def finish_task_confirm(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to finish current task
-    taskname = (await state.get_data())['taskname']
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
-        text=lexicon.msg_finish_ongoing_task_confirm.format(taskname=taskname),
+        text=lexicon.msg_finish_ongoing_task_confirm.format(task_name=current_task.name),
         reply_markup=keyboards.get_finish_task_confirm_kb(lexicon)
     )
     await state.set_state(TaskStates.finish_ongoing_task_confirm)
+
+
+@router.message(
+    lambda message, lexicon: message.text == lexicon.kb_finish_ongoing_task_confirm,
+    TaskStates.finish_ongoing_task_confirm
+)
+async def finish_task(message: Message, state: FSMContext, lexicon: DefaultLexicon):
+    await message.answer(
+        text=lexicon.msg_enter_task_description,
+        reply_markup=ReplyKeyboardRemove()
+    )
+    await state.set_state(TaskStates.completed_task_desc_enter)
+
+
+@router.message(F.text, TaskStates.completed_task_desc_enter)
+async def enter_description(message: Message, state: FSMContext, lexicon: DefaultLexicon):
+    current_task: Task = (await state.get_data())['task']
+    current_task.end_time_timestamp_seconds = floor(time.time())
+
+    hours, minutes = hours_minutes_from_timedelta(current_task.get_duration())
+    await message.answer(
+        text=lexicon.msg_task_completed.format(task_name=current_task.name, hours=hours, minutes=minutes),
+        reply_markup=keyboards.get_start_kb(lexicon)
+    )
+    await state.set_data({})
+    await state.set_state(TaskStates.main_menu)
+
