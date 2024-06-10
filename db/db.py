@@ -11,9 +11,6 @@ SAVE_TASK = """INSERT INTO history_of_users_tasks VALUES (?, ?, ?)"""
 GET_ALL_COMPLETED_TASK = """SELECT * FROM history_of_users_tasks WHERE telegram_user_id = ?"""
 
 
-# TODO: add asynchronous sqlite3
-
-
 def get_connection() -> sqlite3.Connection:
     con = sqlite3.connect(Config().databases.history_of_users_tasks)
     con.row_factory = sqlite3.Row

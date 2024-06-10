@@ -18,8 +18,10 @@ from keyboards import keyboards
 from task.task import Task
 from utils.utils import hours_minutes_from_timedelta
 from db import db
+from middlewares.one_event_per_user import OneEventPerUser
 
 router = Router()
+router.message.middleware(OneEventPerUser())
 
 
 @router.message(
@@ -54,17 +56,26 @@ async def new_task_name_enter_cancel(message: Message, state: FSMContext, lexico
 @router.message(TaskStates.new_task_name_enter)
 async def new_task_name_enter(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User entered the name of the task. Now we need to start the new task
+
+    # But before that we need to check that the name of the task does not exceed 256 characters
+    # (needed for pagination purposes)
+    task_name = message.text
+    max_task_name_length = 256
+    if len(task_name) > 256:
+        await message.answer(lexicon.msg_too_long_task_name.format(max_task_name_length=max_task_name_length))
+        return
+
     # Remember the name and the start time of the task
     await state.update_data(
         task=Task(
             user_id=message.from_user.id,
-            name=message.text,
+            name=task_name,
             start_time_timestamp_seconds=floor(time.time()),
         )
     )
 
     await message.answer(
-        text=lexicon.msg_ongoing_task_start.format(task_name=html.quote(message.text)),
+        text=lexicon.msg_ongoing_task_start.format(task_name=html.quote(task_name)),
         reply_markup=keyboards.get_ongoing_task_kb(lexicon)
     )
 
@@ -148,9 +159,21 @@ async def finish_task(message: Message, state: FSMContext, lexicon: DefaultLexic
 @router.message(F.text, TaskStates.completed_task_desc_enter)
 async def enter_description(
         message: Message,
-        state: FSMContext, lexicon: DefaultLexicon,
+        state: FSMContext,
+        lexicon: DefaultLexicon,
         db_conn: sqlite3.Connection
 ):
+    # The length of the description must not exceed 2048 utf-8 characters (needed for task preview pagination)
+    task_description = message.text
+    max_task_description_length = 2048
+    if len(task_description) > max_task_description_length:
+        await message.answer(
+            lexicon.msg_too_long_description.format(
+                max_task_description_length=max_task_description_length
+            )
+        )
+        return
+
     current_task: Task = (await state.get_data())['task']
     current_task.end_time_timestamp_seconds = floor(time.time())
     current_task.desc = message.text
@@ -159,6 +182,7 @@ async def enter_description(
     db.save_task(db_conn, current_task)
 
     hours, minutes = hours_minutes_from_timedelta(current_task.get_duration())
+
     await message.answer(
         text=lexicon.msg_task_completed.format(task_name=current_task.name, hours=hours, minutes=minutes),
         reply_markup=keyboards.get_start_kb(lexicon)
@@ -166,4 +190,3 @@ async def enter_description(
 
     await state.set_data({})
     await state.set_state(TaskStates.main_menu)
-
