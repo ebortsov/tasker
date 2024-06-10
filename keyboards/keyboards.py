@@ -16,7 +16,7 @@ def form_kb(*button_texts: str, width: int = 1) -> ReplyKeyboardMarkup:
 
 
 def get_start_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
-    return form_kb(lexicon.kb_start_new_task, lexicon.kb_show_prev_tasks)
+    return form_kb(lexicon.kb_start_new_task, lexicon.kb_show_prev_tasks, width=2)
 
 
 def get_cancel_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
@@ -33,3 +33,13 @@ def get_cancel_ongoing_task_confirm_kb(lexicon: DefaultLexicon = DefaultLexicon)
 
 def get_finish_task_confirm_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
     return form_kb(lexicon.kb_finish_ongoing_task_confirm, lexicon.kb_continue_ongoing_task, width=2)
+
+
+def get_task_edit_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
+    return form_kb(
+        lexicon.kb_cancel_task_edit,
+        lexicon.kb_edit_task_name,
+        lexicon.kb_edit_task_description,
+        lexicon.kb_delete_task,
+        width=2
+    )

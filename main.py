@@ -10,9 +10,11 @@ import asyncio
 
 from config.config import Config
 from middlewares.check_active_middleware import CheckActiveMiddleware
+from middlewares.one_event_per_user import OneEventPerUser
 from handlers import common_handlers
 from handlers import tasks_handlers
-from handlers import preview_tasks
+from handlers import view_tasks_handlers
+from handlers import edit_task_handlers
 from lexicon.simple_lexicion import DefaultLexicon
 from db import db
 
@@ -23,9 +25,12 @@ async def main():
 
     dp = Dispatcher(storage=MemoryStorage())
     dp.update.middleware(CheckActiveMiddleware())
+    dp.update.middleware(OneEventPerUser())
+
     dp.include_router(common_handlers.router)
     dp.include_router(tasks_handlers.router)
-    dp.include_router(preview_tasks.router)
+    dp.include_router(view_tasks_handlers.router)
+    dp.include_router(edit_task_handlers.router)
 
     dp.workflow_data.update(lexicon=DefaultLexicon)
 

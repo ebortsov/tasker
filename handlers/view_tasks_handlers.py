@@ -5,7 +5,7 @@ from aiogram.types import Message
 from lexicon.simple_lexicion import DefaultLexicon
 from db import db
 from task.task import Task
-from states.states import TaskStates
+from states.states import TaskCreationStates
 import sqlite3
 
 router = Router()
@@ -13,7 +13,7 @@ router = Router()
 
 @router.message(
     lambda message, lexicon: message.text == lexicon.kb_show_prev_tasks,
-    TaskStates.main_menu
+    TaskCreationStates.main_menu
 )
 async def show_completed_tasks(
         message: Message,
