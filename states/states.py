@@ -13,3 +13,4 @@ class TaskCreationStates(StatesGroup):
 
 class TaskEditStates(StatesGroup):
     menu = State()
+    edit_task_name = State()

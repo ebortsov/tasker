@@ -43,6 +43,7 @@ class DefaultLexicon:
                           'Probably you entered the wrong command?🤔'
     msg_show_edit_task_menu = 'There you can choose how you want to edit your task'
     msg_cancel_task_edit = 'The task edit has been cancelled'
+    msg_any_error = 'Oops, something went wrong🙈'
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
