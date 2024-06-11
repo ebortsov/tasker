@@ -14,3 +14,5 @@ class TaskCreationStates(StatesGroup):
 class TaskEditStates(StatesGroup):
     menu = State()
     edit_task_name = State()
+    edit_task_description = State()
+    delete_task_confirm_menu = State()

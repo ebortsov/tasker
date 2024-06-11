@@ -37,13 +37,12 @@ class DefaultLexicon:
     msg_task_name_edited = 'The task name has been changed✅'
     msg_edit_task_description = 'Please, enter the new description of the task:'
     msg_task_description_edited = 'The task description has been changed✅'
-    msg_delete_task = 'Are you sure you want to delete task «{task_name}»?'
+    msg_delete_task_confirm = 'Are you sure you want to delete task «{task_name}»?'
     msg_task_deleted = 'The task has been deleted✅'
-    msg_task_edit_error = 'Looks like no task was touched by this command...\n' \
-                          'Probably you entered the wrong command?🤔'
+    msg_delete_task_cancel = 'Task deletion has been cancelled'
     msg_show_edit_task_menu = 'There you can choose how you want to edit your task'
     msg_cancel_task_edit = 'The task edit has been cancelled'
-    msg_any_error = 'Oops, something went wrong🙈'
+    msg_no_such_task = 'There is no such task!🙈'
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
@@ -53,10 +52,12 @@ class DefaultLexicon:
     kb_cancel_ongoing_task_confirm: str = 'Confirm cancellation'
     kb_continue_ongoing_task: str = 'Continue task'
     kb_finish_ongoing_task_confirm: str = 'Finish task!'
-    kb_cancel_task_edit: str = 'Cancel edit'
+    kb_back_to_main_menu_from_edit_menu: str = 'Back to main menu'
     kb_edit_task_name: str = 'Edit task name'
     kb_edit_task_description: str = 'Edit task description'
     kb_delete_task: str = 'Delete task'
+    kb_delete_task_confirm: str = 'Yes, I want to delete this task'
+    kb_delete_task_cancel: str = 'Cancel deletion'
 
     @staticmethod
     def form_completed_tasks(completed_tasks: list[Task]) -> str:

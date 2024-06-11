@@ -18,7 +18,7 @@ from keyboards import keyboards
 from task.task import Task
 from utils.utils import hours_minutes_from_timedelta
 from db import db
-from middlewares.one_event_per_user import OneEventPerUser
+from handlers import constants
 
 router = Router()
 
@@ -59,9 +59,12 @@ async def new_task_name_enter(message: Message, state: FSMContext, lexicon: Defa
     # But before that we need to check that the name of the task does not exceed 256 characters
     # (needed for pagination purposes)
     task_name = message.text
-    max_task_name_length = 256
-    if len(task_name) > 256:
-        await message.answer(lexicon.msg_too_long_task_name.format(max_task_name_length=max_task_name_length))
+    if len(task_name) > constants.MAX_TASK_NAME_LENGTH:
+        await message.answer(
+            lexicon.msg_too_long_task_name.format(
+                max_task_name_length=constants.MAX_TASK_NAME_LENGTH
+            )
+        )
         return
 
     # Remember the name and the start time of the task
@@ -164,11 +167,10 @@ async def enter_description(
 ):
     # The length of the description must not exceed 2048 utf-8 characters (needed for task preview pagination)
     task_description = message.text
-    max_task_description_length = 2048
-    if len(task_description) > max_task_description_length:
+    if len(task_description) > constants.MAX_TASK_DESCRIPTION_LENGTH:
         await message.answer(
             lexicon.msg_too_long_description.format(
-                max_task_description_length=max_task_description_length
+                max_task_description_length=constants.MAX_TASK_DESCRIPTION_LENGTH
             )
         )
         return

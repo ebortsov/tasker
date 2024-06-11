@@ -37,9 +37,17 @@ def get_finish_task_confirm_kb(lexicon: DefaultLexicon = DefaultLexicon) -> Repl
 
 def get_task_edit_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
     return form_kb(
-        lexicon.kb_cancel_task_edit,
+        lexicon.kb_back_to_main_menu_from_edit_menu,
         lexicon.kb_edit_task_name,
         lexicon.kb_edit_task_description,
         lexicon.kb_delete_task,
+        width=2
+    )
+
+
+def get_task_deletion_confirm(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
+    return form_kb(
+        lexicon.kb_delete_task_cancel,
+        lexicon.kb_delete_task_confirm,
         width=2
     )

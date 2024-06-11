@@ -1,7 +1,6 @@
 import sqlite3
 from config.config import Config
 from task.task import Task
-from db.exceptions import NoUpdateError
 
 CREATE_TABLE = """CREATE TABLE IF NOT EXISTS history_of_users_tasks (
     telegram_user_id INTEGER NOT NULL,
@@ -21,6 +20,7 @@ SET task_description = ?
 WHERE rowid = ? AND telegram_user_id = ?
 """
 DELETE_TASK = """DELETE FROM history_of_users_tasks WHERE rowid = ? AND telegram_user_id = ?"""
+SELECT_TASK_BY_ID = """SELECT rowid, * FROM history_of_users_tasks WHERE rowid = ? AND telegram_user_id = ?"""
 
 
 def get_connection() -> sqlite3.Connection:
@@ -60,10 +60,7 @@ def edit_task_name(
         user_id: int,
 ) -> None:
     with db_conn:
-        affected_rows = db_conn.execute(EDIT_TASK_NAME, (new_task_name, task_id, user_id)).rowcount
-
-        if not affected_rows:
-            raise NoUpdateError()
+        db_conn.execute(EDIT_TASK_NAME, (new_task_name, task_id, user_id))
 
 
 def edit_task_description(
@@ -73,10 +70,7 @@ def edit_task_description(
         user_id: int
 ) -> None:
     with db_conn:
-        affected_rows = db_conn.execute(EDIT_TASK_DESCRIPTION, (new_task_description, task_id, user_id)).rowcount
-
-        if not affected_rows:
-            raise NoUpdateError()
+        db_conn.execute(EDIT_TASK_DESCRIPTION, (new_task_description, task_id, user_id))
 
 
 def delete_task(
@@ -85,7 +79,21 @@ def delete_task(
         user_id: int
 ) -> None:
     with db_conn:
-        affected_rows = db_conn.execute(DELETE_TASK, (task_id, user_id))
+        db_conn.execute(DELETE_TASK, (task_id, user_id))
 
-        if not affected_rows:
-            raise NoUpdateError()
+
+def get_task(
+        db_conn: sqlite3.Connection,
+        task_id: str | int,
+        user_id: int
+) -> Task | None:
+    with db_conn:
+        result = db_conn.execute(SELECT_TASK_BY_ID, (task_id, user_id)).fetchone()
+        if result is None:
+            return None
+        return Task(
+            task_id=result['rowid'],
+            user_id=result['telegram_user_id'],
+            name=result['task_name'],
+            desc=result['task_description']
+        )
