@@ -16,7 +16,7 @@ class CheckActiveMiddleware(BaseMiddleware):
     async def __call__(self, handler, event, data: dict[str, Any]):
         user_id = data['event_from_user']
         # This concrete update is a command '/start'
-        if hasattr(event, 'message') and event.message.text.startswith('/start'):
+        if event.message is not None and event.message.text.startswith('/start'):
             active_users.add(user_id)
 
         # The user called command /start
@@ -24,6 +24,6 @@ class CheckActiveMiddleware(BaseMiddleware):
             return await handler(event, data)
 
         # Otherwise, if the update is message reply to the user
-        if hasattr(event, 'message'):
+        if event.message is not None:
             await event.message.answer('Please, use the command /start to start the bot')
 

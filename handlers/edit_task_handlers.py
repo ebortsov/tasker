@@ -15,7 +15,7 @@ from keyboards import keyboards
 from states.states import TaskEditStates
 from states.states import TaskCreationStates
 from db import db
-from handlers import constants
+from constants import constants
 from task.task import Task
 
 import sqlite3

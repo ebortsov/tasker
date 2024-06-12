@@ -51,3 +51,4 @@ def get_task_deletion_confirm(lexicon: DefaultLexicon = DefaultLexicon) -> Reply
         lexicon.kb_delete_task_confirm,
         width=2
     )
+

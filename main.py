@@ -13,7 +13,7 @@ from middlewares.check_active_middleware import CheckActiveMiddleware
 from middlewares.one_event_per_user import OneEventPerUser
 from handlers import common_handlers
 from handlers import tasks_handlers
-from handlers import view_tasks_handlers
+from handlers.pagination import view_tasks_handlers
 from handlers import edit_task_handlers
 from lexicon.simple_lexicion import DefaultLexicon
 from db import db

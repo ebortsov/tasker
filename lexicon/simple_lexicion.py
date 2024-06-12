@@ -58,15 +58,14 @@ class DefaultLexicon:
     kb_delete_task: str = 'Delete task'
     kb_delete_task_confirm: str = 'Yes, I want to delete this task'
     kb_delete_task_cancel: str = 'Cancel deletion'
+    kb_next_page: str = '▶️'
+    kb_prev_page: str = '️️◀️'
 
     @staticmethod
-    def form_completed_tasks(completed_tasks: list[Task]) -> str:
-        result = '\n\n'.join(
-            html.bold('Title: ') + html.quote(task.name) + '\n' +
-            html.bold('Description: ') + html.quote(task.desc) + '\n' +
-            f'✏️ /edit_task_{task.task_id}'
-            for task in completed_tasks
+    def form_task(task: Task) -> str:
+        result = (
+                html.bold('Title: ') + html.quote(task.name) + '\n' +
+                html.bold('Description: ') + html.quote(task.desc) + '\n' +
+                f'✏️ /edit_task_{task.task_id}\n\n'
         )
         return result
-
-
