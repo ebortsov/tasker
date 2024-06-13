@@ -9,6 +9,7 @@ import logging
 import asyncio
 
 from config.config import Config
+from config.config import logging_config
 from middlewares.check_active_middleware import CheckActiveMiddleware
 from middlewares.one_event_per_user import OneEventPerUser
 from handlers import common_handlers
@@ -20,8 +21,8 @@ from db import db
 
 
 async def main():
-    logging.basicConfig(level=logging.DEBUG)
     config = Config()
+    logging_config()  # Configure logging settings
 
     dp = Dispatcher(storage=MemoryStorage())
     dp.update.middleware(CheckActiveMiddleware())

@@ -134,3 +134,6 @@ dmypy.json
 
 # Databases
 databases/
+
+# Logs
+logs/

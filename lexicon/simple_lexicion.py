@@ -43,6 +43,7 @@ class DefaultLexicon:
     msg_show_edit_task_menu = 'There you can choose how you want to edit your task'
     msg_cancel_task_edit = 'The task edit has been cancelled'
     msg_no_such_task = 'There is no such task!🙈'
+    msg_use_start = 'Please, use the command /start to start the bot'
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
