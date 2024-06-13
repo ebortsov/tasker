@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from environs import Env
 from pathlib import Path
 import logging
+import sys
 
 
 @dataclass
@@ -34,7 +35,7 @@ def logging_config():
     logger_format = '%(levelname)s [%(asctime)s] - %(filename)s:%(lineno)d - %(name)s - %(message)s'
     default_formatter = logging.Formatter(fmt=logger_format)
 
-    default_handler = logging.StreamHandler()
+    default_handler = logging.StreamHandler(sys.stderr)
     default_handler.setLevel(level=logging.DEBUG)
     default_handler.setFormatter(fmt=default_formatter)
 
@@ -51,3 +52,5 @@ def logging_config():
     root_logger = logging.getLogger()
     root_logger.addHandler(default_handler)
     root_logger.addHandler(warning_handler)
+
+    root_logger.setLevel(level=logging.DEBUG)

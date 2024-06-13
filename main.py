@@ -23,7 +23,6 @@ from db import db
 async def main():
     config = Config()
     logging_config()  # Configure logging settings
-
     dp = Dispatcher(storage=MemoryStorage())
     dp.update.middleware(CheckActiveMiddleware())
     dp.update.middleware(OneEventPerUser())

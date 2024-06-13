@@ -44,6 +44,10 @@ class DefaultLexicon:
     msg_cancel_task_edit = 'The task edit has been cancelled'
     msg_no_such_task = 'There is no such task!🙈'
     msg_use_start = 'Please, use the command /start to start the bot'
+    msg_restart_the_bot_because_of_error = (
+        'Oops, looks like some pretty bad error occurred!\n'
+        'To use the bot please, call the command /start again'
+    )
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
