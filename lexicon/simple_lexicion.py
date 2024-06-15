@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from aiogram import html
 from task.task import Task
 from aiogram import html
-from db import db_users_utc_offset
 
 
 @dataclass
@@ -43,7 +42,7 @@ class DefaultLexicon:
     msg_task_deleted = 'The task has been deleted✅'
     msg_delete_task_cancel = 'Task deletion has been cancelled'
     msg_show_edit_task_menu = 'There you can choose how you want to edit your task'
-    msg_cancel_task_edit = 'The task edit has been cancelled'
+    msg_cancel_task_edit = 'Returned to main menu'
     msg_no_such_task = 'There is no such task!🙈'
     msg_use_start = 'Please, use the command /start to start the bot'
     msg_restart_the_bot_because_of_error = (

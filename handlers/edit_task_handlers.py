@@ -34,7 +34,7 @@ async def show_task_edit_menu(
         lexicon: DefaultLexicon,
 ):
     task_id = int(message.text.split('_', maxsplit=3)[-1])
-    task = db.get_task(db_conn, task_id, message.from_user.id)
+    task = db_history_of_users_tasks.get_task(db_conn, task_id, message.from_user.id)
     if task is None:
         await message.answer(lexicon.msg_no_such_task)
         return
@@ -101,7 +101,7 @@ async def edit_name(
     task: Task = (await state.get_data())['task']
 
     # Edit the name of the task with the provided task_id
-    db.edit_task_name(db_conn, new_task_name, task.task_id, task.user_id)
+    db_history_of_users_tasks.edit_task_name(db_conn, new_task_name, task.task_id, task.user_id)
     await message.answer(
         lexicon.msg_task_name_edited,
         reply_markup=keyboards.get_task_edit_kb(lexicon)
@@ -147,7 +147,7 @@ async def edit_description(
 
     task: Task = (await state.get_data())['task']
     # Edit the task of the task with the provided task_id
-    db.edit_task_description(db_conn, new_task_description, task.task_id, task.user_id)
+    db_history_of_users_tasks.edit_task_description(db_conn, new_task_description, task.task_id, task.user_id)
     await message.answer(
         lexicon.msg_task_description_edited,
         reply_markup=keyboards.get_task_edit_kb(lexicon)
@@ -185,7 +185,7 @@ async def delete_task_confirm(
 ):
     task: Task = (await state.get_data())['task']
     # Delete the task with task_id
-    db.delete_task(db_conn, task.task_id, task.user_id)
+    db_history_of_users_tasks.delete_task(db_conn, task.task_id, task.user_id)
     await message.answer(
         lexicon.msg_task_deleted,
         reply_markup=keyboards.get_task_edit_kb(lexicon)
