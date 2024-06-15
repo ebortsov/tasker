@@ -14,9 +14,12 @@ class OneEventPerUser(BaseMiddleware):
         if user_id not in active_users:
             logging.debug('Allow event')
             active_users.add(user_id)
-            result = await handler(event, data)
-            active_users.remove(user_id)
-            return result
+            try:
+                await handler(event, data)
+            except Exception as e:
+                raise e  # Ignore exceptions (the latter middleware will catch them)
+            finally:
+                active_users.remove(user_id)
         else:
             logging.debug('Do not allow event')
 

@@ -9,7 +9,8 @@ class DefaultLexicon:
     msg_start_command: str = (
         f"{html.bold('Welcome')} to my task manager bot!\n"
         f"This bot provides a convenient way to {html.bold('create')}💫 and {html.bold('track')}📝 "
-        f"your study, work, or any other type of tasks📋"
+        f"your study, work, or any other type of tasks📋\n\n"
+        f"Use the menu to change your UTC offset ({html.bold('initially, the offset is set to 00:00')})"
     )
     msg_new_task_name_enter_prompt: str = 'Please, enter the title of the task:'
     msg_too_long_task_name: str = (
@@ -48,9 +49,12 @@ class DefaultLexicon:
         'Oops, looks like some pretty bad error occurred!\n'
         'To use the bot please, call the command /start again'
     )
+    msg_select_utc_offset = 'Select your offset from UTC'
+    msg_utc_offset_updated = 'You UTC offset🕔 has been successfully updated!'
 
     kb_show_prev_tasks: str = 'Show previous tasks'
     kb_start_new_task: str = 'Start new task'
+    kb_update_utc_offset: str = 'Set your UTC offset'
     kb_cancel_task_creation: str = 'Cancel task creation'
     kb_cancel_ongoing_task: str = 'Cancel ongoing task'
     kb_finish_ongoing_task: str = 'Finish ongoing task'

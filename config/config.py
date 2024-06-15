@@ -12,7 +12,7 @@ class TelegramBot:
 
 @dataclass
 class Databases:
-    history_of_users_tasks: Path
+    database: Path
 
 
 @dataclass
@@ -28,7 +28,7 @@ class Config:
 
         self.logging_config = LoggingConfig(path_to_warning_logs=env.str('WARNING_LOGS'))
         self.telegram_bot = TelegramBot(token=env.str('TOKEN'))
-        self.databases = Databases(history_of_users_tasks=Path(env.str('HISTORY_OF_USERS_TASKS')))
+        self.databases = Databases(database=Path(env.str('DATABASE')))
 
 
 def logging_config():

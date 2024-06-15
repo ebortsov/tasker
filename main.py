@@ -5,7 +5,6 @@ from aiogram.client.bot import DefaultBotProperties
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
-import logging
 import asyncio
 
 from config.config import Config
@@ -16,9 +15,9 @@ from handlers import common_handlers
 from handlers import tasks_handlers
 from handlers.pagination import view_tasks_handlers
 from handlers import edit_task_handlers
+from handlers.utc_offset_update import update_utc
 from lexicon.simple_lexicion import DefaultLexicon
 from db import db
-
 
 async def main():
     config = Config()
@@ -31,6 +30,7 @@ async def main():
     dp.include_router(tasks_handlers.router)
     dp.include_router(view_tasks_handlers.router)
     dp.include_router(edit_task_handlers.router)
+    dp.include_router(update_utc.router)
 
     dp.workflow_data.update(lexicon=DefaultLexicon)
 

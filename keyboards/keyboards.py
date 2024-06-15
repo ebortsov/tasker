@@ -16,7 +16,12 @@ def form_kb(*button_texts: str, width: int = 1) -> ReplyKeyboardMarkup:
 
 
 def get_start_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:
-    return form_kb(lexicon.kb_start_new_task, lexicon.kb_show_prev_tasks, width=2)
+    return form_kb(
+        lexicon.kb_start_new_task,
+        lexicon.kb_show_prev_tasks,
+        lexicon.kb_update_utc_offset,
+        width=2
+    )
 
 
 def get_cancel_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardMarkup:

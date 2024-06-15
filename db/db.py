@@ -24,7 +24,7 @@ SELECT_TASK_BY_ID = """SELECT rowid, * FROM history_of_users_tasks WHERE rowid =
 
 
 def get_connection() -> sqlite3.Connection:
-    con = sqlite3.connect(Config().databases.history_of_users_tasks)
+    con = sqlite3.connect(Config().databases.database)
     con.row_factory = sqlite3.Row
     return con
 

@@ -13,6 +13,7 @@ import sqlite3
 
 from lexicon.simple_lexicion import DefaultLexicon
 from keyboards import keyboards
+from keyboards import update_utc_keyboard
 from task.task import Task
 from utils.utils import hours_minutes_from_timedelta
 from db import db
@@ -34,6 +35,17 @@ async def start_new_task(message: Message, state: FSMContext, lexicon: DefaultLe
     )
     # Switch the state
     await state.set_state(TaskCreationStates.new_task_name_enter)
+
+
+@router.message(
+    lambda message, lexicon: message.text == lexicon.kb_update_utc_offset,
+    TaskCreationStates.main_menu
+)
+async def update_utc_offset(message: Message, lexicon: DefaultLexicon):
+    await message.answer(
+        text=lexicon.msg_select_utc_offset,
+        reply_markup=update_utc_keyboard.get_update_utc_keyboard()
+    )
 
 
 @router.message(
