@@ -23,15 +23,13 @@ DELETE_TASK = """DELETE FROM history_of_users_tasks WHERE rowid = ? AND telegram
 SELECT_TASK_BY_ID = """SELECT rowid, * FROM history_of_users_tasks WHERE rowid = ? AND telegram_user_id = ?"""
 
 
-def get_connection() -> sqlite3.Connection:
-    con = sqlite3.connect(Config().databases.database)
-    con.row_factory = sqlite3.Row
-    return con
-
-
 def create_table(db_conn: sqlite3.Connection):
     with db_conn:
         db_conn.execute(CREATE_TABLE)
+
+
+def init(db_conn: sqlite3.Connection):
+    create_table(db_conn)
 
 
 def save_task(db_conn: sqlite3.Connection, task: Task):

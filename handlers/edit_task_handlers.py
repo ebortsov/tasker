@@ -14,7 +14,7 @@ from lexicon.simple_lexicion import DefaultLexicon
 from keyboards import keyboards
 from states.states import TaskEditStates
 from states.states import TaskCreationStates
-from db import db
+from db import db_history_of_users_tasks
 from constants import constants
 from task.task import Task
 

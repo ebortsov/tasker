@@ -1,4 +1,4 @@
-from db import db
+from db import db_history_of_users_tasks
 from sqlite3 import Connection
 from task.task import Task
 from lexicon.simple_lexicion import DefaultLexicon

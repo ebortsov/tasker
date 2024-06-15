@@ -17,7 +17,8 @@ from handlers.pagination import view_tasks_handlers
 from handlers import edit_task_handlers
 from handlers.utc_offset_update import update_utc
 from lexicon.simple_lexicion import DefaultLexicon
-from db import db
+from db import db_common
+
 
 async def main():
     config = Config()
@@ -35,8 +36,8 @@ async def main():
     dp.workflow_data.update(lexicon=DefaultLexicon)
 
     # Setting up database
-    db_conn = db.get_connection()
-    db.create_table(db_conn)
+    db_conn = db_common.get_connection()
+    db_common.init(db_conn)
     dp.workflow_data.update(db_conn=db_conn)
 
     bot = Bot(

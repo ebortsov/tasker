@@ -16,7 +16,7 @@ from keyboards import keyboards
 from keyboards import update_utc_keyboard
 from task.task import Task
 from utils.utils import hours_minutes_from_timedelta
-from db import db
+from db import db_history_of_users_tasks
 from constants import constants
 
 router = Router()
