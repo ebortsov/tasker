@@ -21,7 +21,7 @@ def get_page(
         page_num: Optional[int] = None,
         last_page: Optional[bool] = None
 ) -> Page:
-    completed_tasks: list[Task] = db.get_all_completed_tasks(db_conn, user_id)
+    completed_tasks: list[Task] = db_history_of_users_tasks.get_all_completed_tasks(db_conn, user_id)
 
     current_page = 1
     accumulated_length = 0

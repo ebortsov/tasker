@@ -6,6 +6,7 @@ from aiogram import F
 from aiogram.fsm.context import FSMContext
 from states.states import TaskCreationStates
 from aiogram.filters import and_f, or_f
+from datetime import timedelta
 
 import time
 from math import floor
@@ -17,6 +18,7 @@ from keyboards import update_utc_keyboard
 from task.task import Task
 from utils.utils import hours_minutes_from_timedelta
 from db import db_history_of_users_tasks
+from db import db_users_utc_offset
 from constants import constants
 
 router = Router()
@@ -63,7 +65,12 @@ async def new_task_name_enter_cancel(message: Message, state: FSMContext, lexico
 
 
 @router.message(TaskCreationStates.new_task_name_enter)
-async def new_task_name_enter(message: Message, state: FSMContext, lexicon: DefaultLexicon):
+async def new_task_name_enter(
+        message: Message,
+        state: FSMContext,
+        lexicon: DefaultLexicon,
+        db_conn: sqlite3.Connection
+):
     # User entered the name of the task. Now we need to start the new task
 
     # But before that we need to check that the name of the task does not exceed 256 characters
@@ -77,12 +84,14 @@ async def new_task_name_enter(message: Message, state: FSMContext, lexicon: Defa
         )
         return
 
+    user_offset = db_users_utc_offset.get_user_utc_offset_as_timedelta(db_conn, message.from_user.id)
+
     # Remember the name and the start time of the task
     await state.update_data(
         task=Task(
             user_id=message.from_user.id,
             name=task_name,
-            start_time_timestamp_seconds=floor(time.time()),
+            start_time=message.date + user_offset
         )
     )
 
@@ -186,11 +195,13 @@ async def enter_description(
         return
 
     current_task: Task = (await state.get_data())['task']
-    current_task.end_time_timestamp_seconds = floor(time.time())
+
+    user_offset = db_users_utc_offset.get_user_utc_offset_as_timedelta(db_conn, message.from_user.id)
+    current_task.end_time = message.date + user_offset
     current_task.desc = message.text
 
     # Saving data to the database
-    db.save_task(db_conn, current_task)
+    db_history_of_users_tasks.save_task(db_conn, current_task)
 
     hours, minutes = hours_minutes_from_timedelta(current_task.get_duration())
 

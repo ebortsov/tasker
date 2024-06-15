@@ -5,7 +5,7 @@ from db import db_users_utc_offset
 
 
 def get_connection() -> sqlite3.Connection:
-    con = sqlite3.connect(Config().databases.database, sqlite3.PARSE_DECLTYPES)
+    con = sqlite3.connect(Config().databases.database, detect_types=sqlite3.PARSE_DECLTYPES)
     con.row_factory = sqlite3.Row
     return con
 

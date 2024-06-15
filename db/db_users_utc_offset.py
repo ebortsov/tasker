@@ -1,5 +1,7 @@
 from constants.utc_offsets import UTCOffset
+
 import sqlite3
+from datetime import timedelta
 
 CREATE_TABLE = """CREATE TABLE IF NOT EXISTS users_utc_offset (
     telegram_user_id INTEGER UNIQUE PRIMARY KEY,
@@ -42,3 +44,8 @@ def get_user_utc_offset(db_conn: sqlite3.Connection, user_id: int):
     with db_conn:
         result = db_conn.execute(SELECT_USER, (user_id, )).fetchone()
         return result['utc_offset'] if result else UTCOffset(hours=0, minutes=0, sign=0)
+
+
+def get_user_utc_offset_as_timedelta(db_conn: sqlite3.Connection, user_id: int) -> timedelta:
+    result = get_user_utc_offset(db_conn, user_id)
+    return timedelta(hours=result.hours * result.sign, minutes=result.minutes * result.sign)

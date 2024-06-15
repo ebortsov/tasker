@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from aiogram import html
 from task.task import Task
 from aiogram import html
+from db import db_users_utc_offset
 
 
 @dataclass
@@ -72,7 +73,24 @@ class DefaultLexicon:
 
     @staticmethod
     def form_task(task: Task) -> str:
+        time_string = ""
+        if task.start_time and task.end_time and task.start_time.day == task.end_time.day:
+            time_string = (
+                f"{html.bold('Duration: ')}{html.italic(task.start_time.strftime('%d-%m-%Y'))} "
+                f"({task.start_time.strftime('%H:%M:%S')} — "
+                f"{task.end_time.strftime('%H:%M:%S')})\n"
+            )
+        elif task.start_time and task.end_time:
+            time_string = (
+                f"{html.bold('Duration: ')}"
+                f"{html.italic(task.start_time.strftime('%d-%m-%Y'))} "
+                f"{task.start_time.strftime('%H:%M:%S')} — "
+                f"{html.italic(task.end_time.strftime('%d-%m-%Y'))} "
+                f"{task.end_time.strftime('%H:%M:%S')}\n"
+            )
+
         result = (
+                time_string +
                 html.bold('Title: ') + html.quote(task.name) + '\n' +
                 html.bold('Description: ') + html.quote(task.desc) + '\n' +
                 f'✏️ /edit_task_{task.task_id}\n\n'

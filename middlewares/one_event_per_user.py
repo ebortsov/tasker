@@ -2,7 +2,6 @@
 This middleware implements the protection from simultaneous execution of several events for the same user.
 """
 from aiogram import BaseMiddleware
-from collections import defaultdict
 import logging
 
 active_users = set()
