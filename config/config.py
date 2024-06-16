@@ -36,7 +36,7 @@ def logging_config():
     default_formatter = logging.Formatter(fmt=logger_format)
 
     default_handler = logging.StreamHandler(sys.stderr)
-    default_handler.setLevel(level=logging.DEBUG)
+    default_handler.setLevel(level=logging.WARNING)
     default_handler.setFormatter(fmt=default_formatter)
 
     config = Config()
