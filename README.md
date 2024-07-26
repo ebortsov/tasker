@@ -1,6 +1,6 @@
 # Tasker
 
-<a href="t.me/limbo_tasker_bot">Link to the bot</a>
+<a href="https://t.me/limbo_tasker_bot">Link to the bot</a>
 
 **Tasker** — is a simple task manager created as Telegram bot.
 
