@@ -1,7 +1,6 @@
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from typing import Optional
-from datetime import timedelta
-from datetime import datetime
 
 
 @dataclass

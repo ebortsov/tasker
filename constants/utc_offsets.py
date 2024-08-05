@@ -49,5 +49,5 @@ UTC_OFFSETS: List[UTCOffset] = [
     UTCOffset(hours=12, minutes=0, sign=1),
     UTCOffset(hours=12, minutes=45, sign=1),
     UTCOffset(hours=13, minutes=0, sign=1),
-    UTCOffset(hours=14, minutes=0, sign=1)
+    UTCOffset(hours=14, minutes=0, sign=1),
 ]

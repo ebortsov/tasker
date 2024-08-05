@@ -1,5 +1,6 @@
-from task.task import Task
 from dataclasses import dataclass
+
+from task.task import Task
 
 
 class NoPage(Exception):
@@ -12,4 +13,3 @@ class Page:
     page_num: int
     is_last_page: bool
     tasks: list[Task]
-

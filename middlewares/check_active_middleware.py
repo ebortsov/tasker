@@ -4,10 +4,13 @@ In case of the user did not call the /start, the middleware replies to the messa
 Additionally, this middleware provides protection from the project to fall because of some exceptions
 Attach this middleware to the updates to the Dispatcher class
 """
-from aiogram import BaseMiddleware
-from typing import Any
-from lexicon.simple_lexicion import DefaultLexicon
+
 import logging
+from typing import Any
+
+from aiogram import BaseMiddleware
+
+from lexicon.simple_lexicion import DefaultLexicon
 
 # active_users is a set of users (user ids) which called the command /start
 active_users: set[int] = set()
@@ -18,11 +21,11 @@ error_occurred: set[int] = set()
 
 class CheckActiveMiddleware(BaseMiddleware):
     async def __call__(self, handler, event, data: dict[str, Any]):
-        user_id = data['event_from_user']
-        lexicon: DefaultLexicon = data['lexicon']
+        user_id = data["event_from_user"]
+        lexicon: DefaultLexicon = data["lexicon"]
 
         # This concrete update is a command '/start <args>'
-        if event.message is not None and event.message.text == '/start':
+        if event.message is not None and event.message.text == "/start":
             if user_id in error_occurred:
                 error_occurred.remove(user_id)
             active_users.add(user_id)

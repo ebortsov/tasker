@@ -1,7 +1,7 @@
-from constants.utc_offsets import UTCOffset
-
 import sqlite3
 from datetime import timedelta
+
+from constants.utc_offsets import UTCOffset
 
 CREATE_TABLE = """CREATE TABLE IF NOT EXISTS users_utc_offset (
     telegram_user_id INTEGER UNIQUE PRIMARY KEY,
@@ -18,9 +18,9 @@ def offset_adapter(offset: UTCOffset) -> str:
 
 def converter_to_offset(record: bytes) -> UTCOffset:
     # Convert SQl type to UTCOffset
-    hours = abs(int(record.split(b':')[0]))
-    minutes = int(record.split(b':')[1])
-    sign = -1 if record[0] == b'-' else (1 if hours or minutes else 0)
+    hours = abs(int(record.split(b":")[0]))
+    minutes = int(record.split(b":")[1])
+    sign = -1 if record[0] == b"-" else (1 if hours or minutes else 0)
     return UTCOffset(hours=hours, minutes=minutes, sign=sign)
 
 
@@ -42,10 +42,14 @@ def update_utc_offset(db_conn: sqlite3.Connection, user_id: int, utc_offset: UTC
 
 def get_user_utc_offset(db_conn: sqlite3.Connection, user_id: int):
     with db_conn:
-        result = db_conn.execute(SELECT_USER, (user_id, )).fetchone()
-        return result['utc_offset'] if result else UTCOffset(hours=0, minutes=0, sign=0)
+        result = db_conn.execute(SELECT_USER, (user_id,)).fetchone()
+        return result["utc_offset"] if result else UTCOffset(hours=0, minutes=0, sign=0)
 
 
-def get_user_utc_offset_as_timedelta(db_conn: sqlite3.Connection, user_id: int) -> timedelta:
+def get_user_utc_offset_as_timedelta(
+    db_conn: sqlite3.Connection, user_id: int
+) -> timedelta:
     result = get_user_utc_offset(db_conn, user_id)
-    return timedelta(hours=result.hours * result.sign, minutes=result.minutes * result.sign)
+    return timedelta(
+        hours=result.hours * result.sign, minutes=result.minutes * result.sign
+    )
