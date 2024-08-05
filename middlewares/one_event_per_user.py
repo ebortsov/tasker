@@ -11,9 +11,9 @@ active_users = set()
 
 class OneEventPerUser(BaseMiddleware):
     async def __call__(self, handler, event, data):
-        user_id = data["event_from_user"]
+        user_id = data['event_from_user']
         if user_id not in active_users:
-            logging.debug("Allow event")
+            logging.debug('Allow event')
             active_users.add(user_id)
             try:
                 await handler(event, data)
@@ -22,4 +22,4 @@ class OneEventPerUser(BaseMiddleware):
             finally:
                 active_users.remove(user_id)
         else:
-            logging.debug("Do not allow event")
+            logging.debug('Do not allow event')

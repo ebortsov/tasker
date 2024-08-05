@@ -22,7 +22,7 @@ router = Router()
 
 
 @router.message(
-    lambda message: message.text.startswith("/edit_task"),
+    lambda message: message.text.startswith('/edit_task'),
     TaskCreationStates.main_menu,
 )
 async def show_task_edit_menu(
@@ -31,7 +31,7 @@ async def show_task_edit_menu(
     db_conn: sqlite3.Connection,
     lexicon: DefaultLexicon,
 ):
-    task_id = int(message.text.split("_", maxsplit=3)[-1])
+    task_id = int(message.text.split('_', maxsplit=3)[-1])
     task = db_history_of_users_tasks.get_task(db_conn, task_id, message.from_user.id)
     if task is None:
         await message.answer(lexicon.msg_no_such_task)
@@ -47,13 +47,10 @@ async def show_task_edit_menu(
 
 
 @router.message(
-    lambda message, lexicon: message.text
-    == lexicon.kb_back_to_main_menu_from_edit_menu,
+    lambda message, lexicon: message.text == lexicon.kb_back_to_main_menu_from_edit_menu,
     TaskEditStates.menu,
 )
-async def back_to_main_menu(
-    message: Message, state: FSMContext, lexicon: DefaultLexicon
-):
+async def back_to_main_menu(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     await message.answer(
         text=lexicon.msg_cancel_task_edit, reply_markup=keyboards.get_start_kb(lexicon)
     )
@@ -72,18 +69,14 @@ async def edit_task_name_enter(
     state: FSMContext,
     lexicon: DefaultLexicon,
 ):
-    await message.answer(
-        text=lexicon.msg_edit_task_name, reply_markup=ReplyKeyboardRemove()
-    )
+    await message.answer(text=lexicon.msg_edit_task_name, reply_markup=ReplyKeyboardRemove())
 
     # Change the state
     await state.set_state(TaskEditStates.edit_task_name)
 
 
 @router.message(F.text, TaskEditStates.edit_task_name)
-async def edit_name(
-    message: Message, state: FSMContext, db_conn: sqlite3, lexicon: DefaultLexicon
-):
+async def edit_name(message: Message, state: FSMContext, db_conn: sqlite3, lexicon: DefaultLexicon):
     new_task_name = message.text
     # Task name is too long
     if len(new_task_name) > constants.MAX_TASK_NAME_LENGTH:
@@ -94,12 +87,10 @@ async def edit_name(
         )
         return
 
-    task: Task = (await state.get_data())["task"]
+    task: Task = (await state.get_data())['task']
 
     # Edit the name of the task with the provided task_id
-    db_history_of_users_tasks.edit_task_name(
-        db_conn, new_task_name, task.task_id, task.user_id
-    )
+    db_history_of_users_tasks.edit_task_name(db_conn, new_task_name, task.task_id, task.user_id)
     await message.answer(
         lexicon.msg_task_name_edited, reply_markup=keyboards.get_task_edit_kb(lexicon)
     )
@@ -117,9 +108,7 @@ async def edit_task_description(
     state: FSMContext,
     lexicon: DefaultLexicon,
 ):
-    await message.answer(
-        text=lexicon.msg_edit_task_description, reply_markup=ReplyKeyboardRemove()
-    )
+    await message.answer(text=lexicon.msg_edit_task_description, reply_markup=ReplyKeyboardRemove())
 
     # Change the state
     await state.set_state(TaskEditStates.edit_task_description)
@@ -138,7 +127,7 @@ async def edit_description(
             )
         )
 
-    task: Task = (await state.get_data())["task"]
+    task: Task = (await state.get_data())['task']
     # Edit the task of the task with the provided task_id
     db_history_of_users_tasks.edit_task_description(
         db_conn, new_task_description, task.task_id, task.user_id
@@ -159,7 +148,7 @@ async def delete_task(
 ):
     # User wants to delete the task
     # First, show the confirmation button
-    task: Task = (await state.get_data())["task"]
+    task: Task = (await state.get_data())['task']
     await message.answer(
         lexicon.msg_delete_task_confirm.format(task_name=task.name),
         reply_markup=keyboards.get_task_deletion_confirm(lexicon),
@@ -175,12 +164,10 @@ async def delete_task(
 async def delete_task_confirm(
     message: Message, state: FSMContext, db_conn: sqlite3, lexicon: DefaultLexicon
 ):
-    task: Task = (await state.get_data())["task"]
+    task: Task = (await state.get_data())['task']
     # Delete the task with task_id
     db_history_of_users_tasks.delete_task(db_conn, task.task_id, task.user_id)
-    await message.answer(
-        lexicon.msg_task_deleted, reply_markup=keyboards.get_task_edit_kb(lexicon)
-    )
+    await message.answer(lexicon.msg_task_deleted, reply_markup=keyboards.get_task_edit_kb(lexicon))
     # Return to the edit keyboard state
     await state.set_state(TaskEditStates.menu)
 
@@ -189,9 +176,7 @@ async def delete_task_confirm(
     lambda message, lexicon: message.text == lexicon.kb_delete_task_cancel,
     TaskEditStates.delete_task_confirm_menu,
 )
-async def delete_task_cancel(
-    message: Message, state: FSMContext, lexicon: DefaultLexicon
-):
+async def delete_task_cancel(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User cancels the deletion of the task
     await message.answer(
         text=lexicon.msg_delete_task_cancel,

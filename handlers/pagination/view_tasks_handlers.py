@@ -27,7 +27,7 @@ async def show_completed_tasks(
         return
 
     await message.answer(
-        text="".join(map(lexicon.form_task, page.tasks)),
+        text=''.join(map(lexicon.form_task, page.tasks)),
         reply_markup=pagination_keyboards.get_corresponding_keyboard(page, lexicon),
     )
 
@@ -39,13 +39,11 @@ async def show_page(
     lexicon: DefaultLexicon,
     callback_data: SwitchPageCallback,
 ):
-    page: Page = get_page(
-        db_conn, callback.from_user.id, lexicon, callback_data.page_num
-    )
+    page: Page = get_page(db_conn, callback.from_user.id, lexicon, callback_data.page_num)
     if page.tasks:
         # Such page exists
         await callback.message.edit_text(
-            text="".join(map(lexicon.form_task, page.tasks)),
+            text=''.join(map(lexicon.form_task, page.tasks)),
             reply_markup=pagination_keyboards.get_corresponding_keyboard(page, lexicon),
         )
         await callback.answer()

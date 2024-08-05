@@ -9,10 +9,8 @@ from states.states import TaskCreationStates
 router = Router()
 
 
-@router.message(Command("start"))
-async def start_command(
-    message: types.Message, state: FSMContext, lexicon: DefaultLexicon
-):
+@router.message(Command('start'))
+async def start_command(message: types.Message, state: FSMContext, lexicon: DefaultLexicon):
     await message.answer(
         text=lexicon.msg_start_command, reply_markup=keyboards.get_start_kb(lexicon)
     )

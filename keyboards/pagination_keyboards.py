@@ -20,9 +20,7 @@ def get_prev_button(page_num: int, lexicon: DefaultLexicon) -> InlineKeyboardBut
     )
 
 
-def get_corresponding_keyboard(
-    page: Page, lexicon: DefaultLexicon
-) -> InlineKeyboardMarkup | None:
+def get_corresponding_keyboard(page: Page, lexicon: DefaultLexicon) -> InlineKeyboardMarkup | None:
     if page.page_num == 1 and page.is_last_page:
         # No reason to show the keyboard if there is only one page in total
         return None

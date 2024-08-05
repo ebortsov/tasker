@@ -22,7 +22,7 @@ def get_update_utc_keyboard() -> InlineKeyboardMarkup:
 
     # Add some additional buttons so that markup looks good
     while len(builder_row) % keyboard_width:
-        builder_row.append(InlineKeyboardButton(text="-", callback_data="."))
+        builder_row.append(InlineKeyboardButton(text='-', callback_data='.'))
 
     builder.row(*builder_row, width=keyboard_width)
     return builder.as_markup()

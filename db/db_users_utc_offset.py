@@ -18,9 +18,9 @@ def offset_adapter(offset: UTCOffset) -> str:
 
 def converter_to_offset(record: bytes) -> UTCOffset:
     # Convert SQl type to UTCOffset
-    hours = abs(int(record.split(b":")[0]))
-    minutes = int(record.split(b":")[1])
-    sign = -1 if record[0] == b"-" else (1 if hours or minutes else 0)
+    hours = abs(int(record.split(b':')[0]))
+    minutes = int(record.split(b':')[1])
+    sign = -1 if record[0] == b'-' else (1 if hours or minutes else 0)
     return UTCOffset(hours=hours, minutes=minutes, sign=sign)
 
 
@@ -32,7 +32,7 @@ def create_table(db_conn: sqlite3.Connection):
 def init(db_conn: sqlite3.Connection):
     create_table(db_conn)
     sqlite3.register_adapter(UTCOffset, offset_adapter)
-    sqlite3.register_converter("UTC_OFFSET", converter_to_offset)
+    sqlite3.register_converter('UTC_OFFSET', converter_to_offset)
 
 
 def update_utc_offset(db_conn: sqlite3.Connection, user_id: int, utc_offset: UTCOffset):
@@ -43,13 +43,9 @@ def update_utc_offset(db_conn: sqlite3.Connection, user_id: int, utc_offset: UTC
 def get_user_utc_offset(db_conn: sqlite3.Connection, user_id: int):
     with db_conn:
         result = db_conn.execute(SELECT_USER, (user_id,)).fetchone()
-        return result["utc_offset"] if result else UTCOffset(hours=0, minutes=0, sign=0)
+        return result['utc_offset'] if result else UTCOffset(hours=0, minutes=0, sign=0)
 
 
-def get_user_utc_offset_as_timedelta(
-    db_conn: sqlite3.Connection, user_id: int
-) -> timedelta:
+def get_user_utc_offset_as_timedelta(db_conn: sqlite3.Connection, user_id: int) -> timedelta:
     result = get_user_utc_offset(db_conn, user_id)
-    return timedelta(
-        hours=result.hours * result.sign, minutes=result.minutes * result.sign
-    )
+    return timedelta(hours=result.hours * result.sign, minutes=result.minutes * result.sign)

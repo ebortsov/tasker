@@ -9,9 +9,7 @@ from lexicon.simple_lexicion import DefaultLexicon
 
 def form_kb(*button_texts: str, width: int = 1) -> ReplyKeyboardMarkup:
     builder = ReplyKeyboardBuilder()
-    builder.row(
-        *[KeyboardButton(text=button_text) for button_text in button_texts], width=width
-    )
+    builder.row(*[KeyboardButton(text=button_text) for button_text in button_texts], width=width)
     return builder.as_markup(resize_keyboard=True)
 
 
@@ -67,6 +65,4 @@ def get_task_edit_kb(lexicon: DefaultLexicon = DefaultLexicon) -> ReplyKeyboardM
 def get_task_deletion_confirm(
     lexicon: DefaultLexicon = DefaultLexicon,
 ) -> ReplyKeyboardMarkup:
-    return form_kb(
-        lexicon.kb_delete_task_cancel, lexicon.kb_delete_task_confirm, width=2
-    )
+    return form_kb(lexicon.kb_delete_task_cancel, lexicon.kb_delete_task_confirm, width=2)

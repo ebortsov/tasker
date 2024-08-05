@@ -46,9 +46,7 @@ async def update_utc_offset(message: Message, lexicon: DefaultLexicon):
     lambda message, lexicon: message.text == lexicon.kb_cancel_task_creation,
     TaskCreationStates.new_task_name_enter,
 )
-async def new_task_name_enter_cancel(
-    message: Message, state: FSMContext, lexicon: DefaultLexicon
-):
+async def new_task_name_enter_cancel(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to cancel the start of the new task
     await message.answer(
         text=lexicon.msg_new_task_cancelled,
@@ -104,9 +102,7 @@ async def new_task_name_enter(
     lambda message, lexicon: message.text == lexicon.kb_cancel_ongoing_task,
     TaskCreationStates.ongoing_task,
 )
-async def cancel_ongoing_task_confirm(
-    message: Message, state: FSMContext, lexicon: DefaultLexicon
-):
+async def cancel_ongoing_task_confirm(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to cancel the ongoing task
     # In this handler we want to receive confirmation in task cancellation
     await message.answer(
@@ -122,7 +118,7 @@ async def cancel_ongoing_task_confirm(
 )
 async def kill_task(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User confirms that they want to cancel the task
-    current_task: Task = (await state.get_data())["task"]
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
         text=lexicon.msg_task_killed.format(task_name=current_task.name),
         reply_markup=keyboards.get_start_kb(lexicon),
@@ -144,7 +140,7 @@ async def kill_task(message: Message, state: FSMContext, lexicon: DefaultLexicon
 )
 async def continue_task(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to continue the task (applies to both cancellation and finalization of the task)
-    current_task: Task = (await state.get_data())["task"]
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
         text=lexicon.msg_continue_task.format(task_name=current_task.name),
         reply_markup=keyboards.get_ongoing_task_kb(lexicon),
@@ -156,15 +152,11 @@ async def continue_task(message: Message, state: FSMContext, lexicon: DefaultLex
     lambda message, lexicon: message.text == lexicon.kb_finish_ongoing_task,
     TaskCreationStates.ongoing_task,
 )
-async def finish_task_confirm(
-    message: Message, state: FSMContext, lexicon: DefaultLexicon
-):
+async def finish_task_confirm(message: Message, state: FSMContext, lexicon: DefaultLexicon):
     # User wants to finish current task
-    current_task: Task = (await state.get_data())["task"]
+    current_task: Task = (await state.get_data())['task']
     await message.answer(
-        text=lexicon.msg_finish_ongoing_task_confirm.format(
-            task_name=current_task.name
-        ),
+        text=lexicon.msg_finish_ongoing_task_confirm.format(task_name=current_task.name),
         reply_markup=keyboards.get_finish_task_confirm_kb(lexicon),
     )
     await state.set_state(TaskCreationStates.finish_ongoing_task_confirm)
@@ -198,7 +190,7 @@ async def enter_description(
         )
         return
 
-    current_task: Task = (await state.get_data())["task"]
+    current_task: Task = (await state.get_data())['task']
 
     user_offset = db_users_utc_offset.get_user_utc_offset_as_timedelta(
         db_conn, message.from_user.id

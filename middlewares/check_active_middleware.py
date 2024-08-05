@@ -21,11 +21,11 @@ error_occurred: set[int] = set()
 
 class CheckActiveMiddleware(BaseMiddleware):
     async def __call__(self, handler, event, data: dict[str, Any]):
-        user_id = data["event_from_user"]
-        lexicon: DefaultLexicon = data["lexicon"]
+        user_id = data['event_from_user']
+        lexicon: DefaultLexicon = data['lexicon']
 
         # This concrete update is a command '/start <args>'
-        if event.message is not None and event.message.text == "/start":
+        if event.message is not None and event.message.text == '/start':
             if user_id in error_occurred:
                 error_occurred.remove(user_id)
             active_users.add(user_id)
