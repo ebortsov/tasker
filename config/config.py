@@ -27,17 +27,13 @@ class Config:
         env = Env()
         env.read_env(path=env_path)
 
-        self.logging_config = LoggingConfig(
-            path_to_warning_logs=env.str("WARNING_LOGS")
-        )
-        self.telegram_bot = TelegramBot(token=env.str("TOKEN"))
-        self.databases = Databases(database=Path(env.str("DATABASE")))
+        self.logging_config = LoggingConfig(path_to_warning_logs=env.str('WARNING_LOGS'))
+        self.telegram_bot = TelegramBot(token=env.str('TOKEN'))
+        self.databases = Databases(database=Path(env.str('DATABASE')))
 
 
 def logging_config():
-    logger_format = (
-        "%(levelname)s [%(asctime)s] - %(filename)s:%(lineno)d - %(name)s - %(message)s"
-    )
+    logger_format = '%(levelname)s [%(asctime)s] - %(filename)s:%(lineno)d - %(name)s - %(message)s'
     default_formatter = logging.Formatter(fmt=logger_format)
 
     default_handler = logging.StreamHandler(sys.stderr)
@@ -47,7 +43,7 @@ def logging_config():
     config = Config()
 
     warning_handler = logging.FileHandler(
-        filename=config.logging_config.path_to_warning_logs, mode="a", encoding="utf-8"
+        filename=config.logging_config.path_to_warning_logs, mode='a', encoding='utf-8'
     )
     warning_handler.setLevel(level=logging.WARNING)
     warning_handler.setFormatter(fmt=default_formatter)

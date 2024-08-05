@@ -1,7 +1,4 @@
 import sqlite3
-import time
-from datetime import timedelta
-from math import floor
 
 from aiogram import F, Router, html
 from aiogram.filters import and_f, or_f

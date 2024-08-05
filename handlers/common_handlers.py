@@ -1,5 +1,5 @@
-from aiogram import Router, html, types
-from aiogram.filters import Command, StateFilter
+from aiogram import Router, types
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
 from keyboards import keyboards
