@@ -1,0 +1,15 @@
+{ 
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Lint and format the code",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-Command",
+                "ruff check --fix; ruff check --select I --fix; ruff format"
+            ]
+        }
+    ]
+}

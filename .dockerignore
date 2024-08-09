@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+docker-compose.yml
+Dockerfile
+.docker
+.dockerignore
+
+# Byte-compiled files
+**/__pycache__/
+**/*.py[cod]
+
+# C extensions
+*.so
+
+# Virtual environment
+.venv/
+venv/
+
+# PyCharm
+.idea
+
+# VS Code
+.vscode/
+
+# ruff:
+.ruff_cache/

@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run the Bot",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}\\main.py",
+            "console": "integratedTerminal",
+            "env": {
+                "DATABASE": "databases/db.db",
+                "LOGS": "logs/logs.log",
+                "WARNING_LOGS": "logs/warning_logs.log"
+            },
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

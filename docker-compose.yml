@@ -1,0 +1,16 @@
+services:
+    tasker-bot:
+        image: "tasker_bot"
+        build: .
+        restart: always
+        volumes:
+            # Folder with database
+            - "./databases:/usr/src/app/databases"
+            # Folder with logs
+            - "./logs:/usr/src/app/logs"
+        # File with environment-specific variables (see .env.example)
+        env_file: "./.env"
+        environment:
+            - DATABASE=databases/db.db
+            - LOGS=logs/logs.log
+            - WARNING_LOGS=logs/warning_logs.log
