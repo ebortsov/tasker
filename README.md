@@ -14,8 +14,6 @@ The users simply create and finish the tasks. After that, the users view through
 <img alt="Screenshot 1" src="https://github.com/user-attachments/assets/ab16a2f5-d4b4-42ab-9c91-94529d29e047" width="300px"/>
 <img alt="Screenshot 1" src="https://github.com/user-attachments/assets/ba507a5f-da1f-4bc1-8af7-57c3c0449e77" width="300px"/>
 
----
-
 ## Deploy
 
 To deploy the Tasker bot, follow these steps:
@@ -25,8 +23,6 @@ To deploy the Tasker bot, follow these steps:
 3) Create directories `databases` and `logs` in the root.
 4) Launch the bot with command `docker compose up -d` (ensure the Docker is installed on you system).
 
----
-
 ## Technologies
 
 This project is built using the following technologies:
@@ -35,8 +31,6 @@ This project is built using the following technologies:
 2) [SQLite](https://sqlite.org/) - A lightweight and self-contained SQL database engine.
 3) [Ruff](https://docs.astral.sh/ruff/) - A fast Python linter and formatter.
 4) [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) - Tools for containerizing and deploying the bot in an isolated environment.
-
----
 
 ## Other
 The bot was developed using [vscode](https://code.visualstudio.com/) as a primary code editor. 
